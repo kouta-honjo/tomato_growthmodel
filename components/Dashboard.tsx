@@ -348,7 +348,7 @@ export default function Dashboard() {
             <span className={`transition ${showParams ? "rotate-90" : ""}`}>
               ▶
             </span>
-            品種パラメータ一覧（桃太郎ファイト近似）
+            品種パラメータ一覧（日本大玉トマト代表値）
           </button>
 
           {showParams && (
