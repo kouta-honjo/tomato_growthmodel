@@ -120,10 +120,17 @@ export default function Dashboard() {
     bad: SimulationResult | null;
   }>({ good: null, bad: null });
 
+  const [error, setError] = useState<string | null>(null);
   const [showParams, setShowParams] = useState(false);
 
   useEffect(() => {
-    setResults({ good: runSimulation("good"), bad: runSimulation("bad") });
+    try {
+      const good = runSimulation("good");
+      const bad = runSimulation("bad");
+      setResults({ good, bad });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    }
   }, []);
 
   const merged = useMemo<MergedRow[]>(() => {
@@ -149,6 +156,18 @@ export default function Dashboard() {
       };
     });
   }, [results]);
+
+  /* error */
+  if (error) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+        <div className="rounded-lg bg-red-50 p-6 text-center">
+          <p className="font-bold text-red-700">シミュレーションエラー</p>
+          <p className="mt-2 text-sm text-red-600">{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   /* loading */
   if (!results.good || !results.bad) {
