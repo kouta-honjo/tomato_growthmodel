@@ -40,6 +40,7 @@ interface MergedRow {
 /* ── reusable chart panel ──────────────────────── */
 function ChartPanel({
   title,
+  description,
   data,
   goodKey,
   badKey,
@@ -47,6 +48,7 @@ function ChartPanel({
   precision = 1,
 }: {
   title: string;
+  description: string;
   data: MergedRow[];
   goodKey: keyof MergedRow;
   badKey: keyof MergedRow;
@@ -55,7 +57,10 @@ function ChartPanel({
 }) {
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-      <h3 className="mb-2 text-sm font-semibold text-gray-700">{title}</h3>
+      <h3 className="mb-1 text-sm font-semibold text-gray-700">{title}</h3>
+      <p className="mb-2 text-[11px] leading-snug text-gray-400">
+        {description}
+      </p>
       <ResponsiveContainer width="100%" height={240}>
         <LineChart
           data={data}
@@ -280,14 +285,16 @@ export default function Dashboard() {
         {/* ── 6-panel charts ── */}
         <section className="grid gap-4 lg:grid-cols-2">
           <ChartPanel
-            title="気温 (℃)"
+            title="日平均気温 — temp (℃)"
+            description="気象庁つくば観測点の日平均気温。Bad条件では7・8月にハウス内高温を想定し +3℃ 補正。"
             data={merged}
             goodKey="temp_good"
             badKey="temp_bad"
             unit="℃"
           />
           <ChartPanel
-            title="PAR (MJ PAR m⁻² day⁻¹)"
+            title="光合成有効放射 — PAR (MJ m⁻² day⁻¹)"
+            description="日照時間から Angström–Prescott 式で全天日射量 Rs を算出し、PAR = 0.45 × Rs で換算した日積算値。"
             data={merged}
             goodKey="PAR_good"
             badKey="PAR_bad"
@@ -295,7 +302,8 @@ export default function Dashboard() {
             precision={2}
           />
           <ChartPanel
-            title="LAI"
+            title="葉面積指数 — LAI"
+            description="単位地表面積あたりの葉面積（m² 葉 / m² 地面）。展葉速度 α と栽植密度 ρ から日次更新。群落の光吸収能力を示す。"
             data={merged}
             goodKey="LAI_good"
             badKey="LAI_bad"
@@ -303,7 +311,8 @@ export default function Dashboard() {
             precision={2}
           />
           <ChartPanel
-            title="LUE (g DW MJ⁻¹)"
+            title="光利用効率 — LUE (g DW MJ⁻¹)"
+            description="吸収光 1 MJ あたりの乾物生産量。CO₂ 濃度の対数関数で算出（LUE = a·ln(CO₂) + b）。Good: 700 ppm → 2.76、Bad: 400 ppm → 1.91。"
             data={merged}
             goodKey="LUE_good"
             badKey="LUE_bad"
@@ -311,7 +320,8 @@ export default function Dashboard() {
             precision={2}
           />
           <ChartPanel
-            title="積算受光量 IL_c (MJ m⁻²)"
+            title="積算受光量 — IL_c (MJ m⁻²)"
+            description="群落が吸収した光の累積量。IL_c = Σ(PAR × f_int)。f_int は Beer–Lambert 則による群落光吸収割合。"
             data={merged}
             goodKey="IL_c_good"
             badKey="IL_c_bad"
@@ -319,7 +329,8 @@ export default function Dashboard() {
             precision={0}
           />
           <ChartPanel
-            title="乾物生産量 TDM (g DW m⁻²)"
+            title="総乾物重 — TDM (g DW m⁻²)"
+            description="地上部乾物生産量の累積値。TDM = Σ(LUE × IL_d)。最終的に HI（果実分配率）と DMC（乾物率）で生果収量に換算。"
             data={merged}
             goodKey="TDM_good"
             badKey="TDM_bad"
