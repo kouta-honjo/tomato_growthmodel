@@ -46,7 +46,8 @@ export function runSimulation(key: "good" | "bad"): SimulationResult {
 
   const lastTDM = daily[daily.length - 1].TDM;
   const kgPerM2 = (lastTDM * PARAMS.HI) / PARAMS.DMC / 1000;
-  const tPer10a = kgPerM2 * 10;
+  // 1 kg/m² × 1000 m²/10a ÷ 1000 kg/t = 1 t/10a
+  const tPer10a = kgPerM2;
 
   return {
     scenario,

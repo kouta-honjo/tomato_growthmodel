@@ -28,7 +28,8 @@ export function initialState(date: string, temp: number, PAR: number, CO2: numbe
   const f_int = 1 - Math.exp(-k * LAI);
   const IL_d = PAR * f_int;
   let LUE = a_co2 * Math.log(CO2) + b_co2;
-  LUE = Math.max(LUE, LUE_o);
+  // 負値防止のみ（LUE_o はリファレンス値; CO₂応答を保持する）
+  LUE = Math.max(LUE, 0);
   const TDM = LUE * IL_d;
 
   return {
@@ -78,7 +79,8 @@ export function stepDay(
 
   // Step 6: LUE CO₂補正
   let LUE = a_co2 * Math.log(CO2) + b_co2;
-  LUE = Math.max(LUE, LUE_o);
+  // 負値防止のみ（LUE_o はリファレンス値; CO₂応答を保持する）
+  LUE = Math.max(LUE, 0);
 
   // Step 7: 乾物生産
   const TDM = prev.TDM + LUE * IL_d;
