@@ -13,6 +13,7 @@ import {
 } from "recharts";
 import { runSimulation, type SimulationResult } from "@/lib/simulator";
 import { PARAM_TABLE } from "@/lib/params";
+import DecisionAdvisor from "@/components/DecisionAdvisor";
 
 /* ── colour tokens ─────────────────────────────── */
 const C_GOOD = "#16a34a"; // green-600
@@ -380,6 +381,9 @@ export default function Dashboard() {
             </div>
           )}
         </section>
+
+        {/* ── decision advisor ── */}
+        <DecisionAdvisor />
 
         {/* ── model description ── */}
         <section className="rounded-xl border border-gray-200 bg-white p-5 text-xs leading-relaxed text-gray-500 shadow-sm">

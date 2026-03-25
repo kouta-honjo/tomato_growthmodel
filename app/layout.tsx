@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import NavTabs from "@/components/NavTabs";
 
 export const metadata: Metadata = {
   title: "トマト生育・収量予測シミュレーター",
@@ -14,7 +15,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <NavTabs />
+        {children}
+      </body>
     </html>
   );
 }
